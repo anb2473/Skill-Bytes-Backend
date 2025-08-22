@@ -1,0 +1,16 @@
+{
+  "name": "skill-bytes",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "prod": "node server.js"
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "Austin Nabil Blass",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "description": "Skill Bytes is a website to help developers learn new programming languages and skills by providing daily challenges.",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
