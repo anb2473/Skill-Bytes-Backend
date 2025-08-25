@@ -47,4 +47,4 @@ This License shall be governed by and construed in accordance with the laws of t
 For any questions regarding this License, please contact:  
 
 **Austin Nabil Blass**  
-Email: anb2473@proton.me
+Email: <anb2473@proton.me>

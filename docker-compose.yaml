@@ -1,0 +1,32 @@
+version: '3'
+services:
+  server:
+    build: ./server
+    container_name: skill-bytes-server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - skill-bytes-db
+    volumes:
+      - ./server:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@skill-bytes-db:5432/skill-bytes?schema=public
+      - NODE_ENV=development
+      - PORT=3000
+    env_file:
+      - ./server/.env
+
+  skill-bytes-db:
+    image: postgres:13-alpine
+    container_name: skill-bytes-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=skill-bytes
+    ports:
+      - "5432:5432"
+    volumes:
+      - skill-bytes-db-data:/var/lib/postgresql/data
+
+volumes:
+  skill-bytes-db-data:
