@@ -1,9 +1,0 @@
-{"clientVersion":"6.14.0","level":"error","name":"PrismaClientValidationError","timestamp":"2025-08-25T03:49:46.324Z"}
-{"clientVersion":"6.14.0","level":"error","name":"PrismaClientValidationError","timestamp":"2025-08-25T03:51:03.607Z"}
-{"clientVersion":"6.14.0","level":"error","name":"PrismaClientValidationError","timestamp":"2025-08-25T03:59:18.620Z"}
-{"clientVersion":"6.14.0","level":"error","name":"PrismaClientValidationError","timestamp":"2025-08-25T04:00:03.108Z"}
-{"clientVersion":"6.14.0","level":"error","name":"PrismaClientValidationError","timestamp":"2025-08-25T04:02:15.589Z"}
-{"level":"error","timestamp":"2025-08-25T04:06:04.606Z"}
-{"clientVersion":"6.14.0","code":"P2021","level":"error","meta":{"modelName":"User","table":"public.User"},"name":"PrismaClientKnownRequestError","timestamp":"2025-08-25T04:08:20.316Z"}
-{"level":"error","timestamp":"2025-08-25T04:09:50.752Z"}
-{"error":{},"level":"error","message":"Error in signup - user creation / jwt catch: secretOrPrivateKey must have a value","name":"Error","stack":"Error: secretOrPrivateKey must have a value\n    at module.exports [as sign] (/app/node_modules/jsonwebtoken/sign.js:111:20)\n    at file:///app/routes/auth/auth.js:65:31","timestamp":"2025-08-25T04:13:58.832Z"}
