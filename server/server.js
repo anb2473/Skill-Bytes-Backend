@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth/auth.js';
 import userRoutes from './routes/user/user.js';
+import authMiddleware from './middleware/authMiddleware.js';
 import logger from './logger.js';
 import cors from 'cors';
 
@@ -19,7 +20,7 @@ app.use(cors({    // Necessary to prevent browser from blocking site
 }));
 
 app.use('/auth', authRoutes);
-app.use('/user', userRoutes);
+app.use('/user', authMiddleware, userRoutes);
 
 app.listen(PORT, () => {
     logger.info(`Server local at http://127.0.0.1:${PORT}`);
