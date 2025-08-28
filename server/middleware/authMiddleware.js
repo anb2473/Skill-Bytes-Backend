@@ -2,18 +2,19 @@
 
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.SECRET_KEY;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 function authMiddleware(req, res, next) {
     const token = req.cookies.jwt;
 
     if (!token) {
-        return res.status(403);
+        return res.status(403).json({ error: "No token provided" });
     }
 
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(403);
+            console.log('JWT verification error:', err);
+            return res.status(403).json({ error: "Invalid token" });
         }
         
         // Attatch userId from JWT for EJS

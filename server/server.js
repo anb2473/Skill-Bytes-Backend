@@ -5,6 +5,7 @@ import userRoutes from './routes/user/user.js';
 import authMiddleware from './middleware/authMiddleware.js';
 import logger from './logger.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(cors({    // Necessary to prevent browser from blocking site
     origin: 'http://localhost:5173', // your frontend URL
