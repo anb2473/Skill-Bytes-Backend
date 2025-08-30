@@ -21,6 +21,10 @@ app.use(cors({    // Necessary to prevent browser from blocking site
     credentials: true,               // if you’re using cookies/auth
 }));
 
+app.get('/ping', (req, res) => {
+    return res.status(200).json({ msg: 'pong' });
+});
+
 app.use('/auth', authRoutes);
 app.use('/user', authMiddleware, userRoutes);
 
