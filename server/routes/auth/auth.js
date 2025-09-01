@@ -28,9 +28,8 @@ router.post('/signup', async (req, res) => {
 
         if (!auth) return res.status(400).json({ err: 'Missing Basic Auth' });
 
-        const username = auth.usernameOrEmail.trim();
+        const email = auth.usernameOrEmail.trim();  // not username for signup
         const passw = auth.password;
-        const email = auth.email.trim();
 
         if (!validator.isEmail(email)) {
             return res.status(400).json({ err: 'Invalid email format' });
@@ -38,29 +37,16 @@ router.post('/signup', async (req, res) => {
         if (typeof passw !== 'string' || passw.length < minPasswLen) {
             return res.status(400).json({ err: 'Password must be at least 6 characters' });
         }
-        if (typeof username !== 'string' || username.length < 3) {
-            return res.status(400).json({ err: 'Username must be at least 3 characters' });
-        }
-        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-            return res.status(400).json({ err: 'Username can only contain letters, numbers, and underscores' });
-        }
 
         // Check if email or username already exists
-        const existing = await prisma.user.findFirst({
+        const existing = await prisma.user.findUnique({
             where: {
-                OR: [
-                    { email },
-                    { username }
-                ]
+                email: email
             }
         });
 
         if (existing) {
-            if (existing.email === email) {
-                return res.status(409).json({ err: 'Email already in use' });
-            } else {
-                return res.status(409).json({ err: 'Username already taken' });
-            }
+            return res.status(409).json({ err: 'Email already in use' });
         }
 
         try {
@@ -69,8 +55,7 @@ router.post('/signup', async (req, res) => {
             const newUser = await prisma.user.create({
                 data: {
                     email,
-                    username,
-                    passw: passw_hash
+                    passw: passw_hash,
                 }
             });
 

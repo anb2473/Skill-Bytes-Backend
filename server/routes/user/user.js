@@ -74,15 +74,15 @@ router.get('/inbox', async (req, res) => {
     const userId = req.userID;
     
     try {
-        const user = prisma.user.findUnique({
-            where: { id: userId }
-        })
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            include: { inbox: true }
+        });
         if (!user) {
-            res.status(403).json({ err: 'User not found' });
+            return res.status(403).json({ err: 'User not found' });
         }
 
         return res.status(200).json({ messages: user.inbox });
-
     } catch (err) {
         logger.error('Error in inbox API only method', {
             error: err,

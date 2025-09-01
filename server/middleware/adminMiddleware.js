@@ -6,7 +6,6 @@ import validator from 'validator';
 import logger from '../logger.js';
 
 const ADMIN_PASSW_HASH = Buffer.from(process.env.ADMIN_PASSW_HASH, 'base64').toString('utf-8');
-console.log(ADMIN_PASSW_HASH);
 
 function parseBasicAuth(req) {
   const authHeader = req.headers['authorization'];
