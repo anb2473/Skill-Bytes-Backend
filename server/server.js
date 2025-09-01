@@ -2,7 +2,9 @@ import express from 'express'
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth/auth.js';
 import userRoutes from './routes/user/user.js';
+import adminRoutes from './routes/admin/admin.js';
 import authMiddleware from './middleware/authMiddleware.js';
+import adminMiddleware from './middleware/adminMiddleware.js';
 import logger from './logger.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -27,6 +29,7 @@ app.get('/ping', (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/user', authMiddleware, userRoutes);
+app.use('/admin', adminMiddleware, adminRoutes);
 
 app.listen(PORT, () => {
     logger.info(`Server local at http://127.0.0.1:${PORT}`);

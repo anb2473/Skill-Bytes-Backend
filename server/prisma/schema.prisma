@@ -13,7 +13,7 @@ model Message {
   id          Int @id @default(autoincrement())
   icon        String  @default("📢")
   content     String
-  bannerColor String
+  bannerColor String @default("#2821fc")
   owner       User @relation(fields: [ownerid], references: [id])
   ownerid     Int
 }
