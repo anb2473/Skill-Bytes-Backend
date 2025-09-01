@@ -12,12 +12,25 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const router = express.Router();
 
+function parseBasicAuth(req) {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader || !authHeader.startsWith('Basic ')) return null;
+
+  const base64Credentials = authHeader.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
+  const [usernameOrEmail, password] = credentials.split(':');
+  return { usernameOrEmail, password };
+}
+
 router.post('/signup', async (req, res) => {
     try {
-        const body = req.body;
-        const email = body.email.trim();
-        const username = body.username.trim();
-        const passw = body.passw;
+        const auth = parseBasicAuth(req);
+
+        if (!auth) return res.status(400).json({ err: 'Missing Basic Auth' });
+
+        const username = auth.usernameOrEmail.trim();
+        const passw = auth.password;
+        const email = auth.email.trim();
 
         if (!validator.isEmail(email)) {
             return res.status(400).json({ err: 'Invalid email format' });
@@ -95,17 +108,17 @@ router.post('/signup', async (req, res) => {
             stack: err.stack,
             name: err.name
         });
-        return res.status(500).json({ 
-            err: 'Internal server error',
-        });
+        return res.status(500).json({ err: 'Internal server error' });
     }
 });
 
 router.post('/login', async (req, res) => {
     try {
-        const body = req.body;
-        const emailOrUsername = body.emailOrUsername.trim();
-        const passw = body.passw;
+        const auth = parseBasicAuth(req);
+        if (!auth) return res.status(400).json({ err: 'Missing Basic Auth' });
+
+        const emailOrUsername = auth.usernameOrEmail.trim();
+        const passw = auth.password;
 
         // Validate input
         if (validator.isEmail(emailOrUsername)) {
@@ -161,7 +174,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ err: 'Incorrect password or email' });
         }
     } catch (err) {
-        logger.error(err);
+        logger.error('Error in login', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
         return res.status(500).json({ err: 'Internal server error' });
     }
 });

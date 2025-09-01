@@ -1,5 +1,6 @@
 import express from 'express';
 import { prisma } from '../../prismaClient.js';
+import logger from '../../logger.js';
 
 const router = express.Router();
 
@@ -17,8 +18,13 @@ router.post('/set-name', async (req, res) => {
             data: { fname: name.trim() }
         });
         return res.status(200).json({ msg: 'Name updated successfully' });
-    } catch (error) {
-        console.error('Error updating name:', error);
+    } catch (err) {
+        logger.error('Error in set name API method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name,
+        });
         return res.status(500).json({ err: 'Internal server error' });
     }
 });
@@ -53,10 +59,66 @@ router.post('/set-username', async (req, res) => {
             data: { username: username.trim() }
         });
         return res.status(200).json({ msg: 'Username updated successfully' });
-    } catch (error) {
-        console.error('Error updating username:', error);
+    } catch (err) {
+        logger.error('Error in set username API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
         return res.status(500).json({ err: 'Internal server error' });
     }
 });
+
+router.get('/inbox', async (req, res) => {
+    const userId = req.userID;
+    
+    try {
+        const user = prisma.user.findUnique({
+            where: { id: userId }
+        })
+        if (!user) {
+            res.status(403).json({ err: 'User not found' });
+        }
+
+        return res.status(200).json({ messages: user.inbox });
+
+    } catch (err) {
+        logger.error('Error in inbox API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
+router.delete('/msg:msgId', async (req, res) => {
+    const userId = req.userID;
+    const msgId = parseInt(req.params.msgId);
+    if (isNaN(msgId)) {
+        return res.status(400).json({ err: 'Invalid message ID' });
+    }
+    try {
+        deleted = await prisma.message.delete({
+            where: {
+                id: msgId,
+                userId: userId
+            }
+        });
+
+        if (!deleted) {
+            return res.status(404).json({ err: 'Message not found' });
+        }
+    } catch (err) {
+        logger.error('Error in delete message API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+})
 
 export default router;
