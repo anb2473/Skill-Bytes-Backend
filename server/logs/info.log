@@ -1,1 +1,27 @@
 {"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-26T19:14:03.753Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-27T02:06:39.445Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T04:21:54.418Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T21:04:53.275Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T21:29:18.206Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T21:50:50.508Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T21:54:36.755Z"}
+{"level":"error","timestamp":"2025-08-28T21:54:48.440Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T21:56:20.358Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T21:57:08.561Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:17:22.748Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:20:42.057Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:25:59.407Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:27:41.893Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:28:31.258Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:29:57.586Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-28T22:31:21.742Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-30T03:25:26.349Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-30T19:54:49.472Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-08-30T20:01:05.001Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-09-01T01:48:18.200Z"}
+{"level":"error","timestamp":"2025-09-01T01:48:32.678Z"}
+{"level":"error","timestamp":"2025-09-01T01:54:30.457Z"}
+{"level":"error","timestamp":"2025-09-01T01:54:31.689Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-09-01T01:56:09.183Z"}
+{"error":{},"level":"error","message":"Error in login emailOrUsername is not defined","name":"ReferenceError","stack":"ReferenceError: emailOrUsername is not defined\n    at file:///app/routes/auth/auth.js:125:31\n    at Layer.handleRequest (/app/node_modules/router/lib/layer.js:152:17)\n    at next (/app/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/app/node_modules/router/lib/route.js:117:3)\n    at handle (/app/node_modules/router/index.js:435:11)\n    at Layer.handleRequest (/app/node_modules/router/lib/layer.js:152:17)\n    at /app/node_modules/router/index.js:295:15\n    at processParams (/app/node_modules/router/index.js:582:12)\n    at next (/app/node_modules/router/index.js:291:5)\n    at Function.handle (/app/node_modules/router/index.js:186:3)","timestamp":"2025-09-01T01:56:15.592Z"}
+{"level":"info","message":"Server local at http://127.0.0.1:3000","timestamp":"2025-09-01T01:57:03.590Z"}

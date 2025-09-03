@@ -1,8 +1,26 @@
-// Defines our logger configuration to save logs as JSON
-
 import winston from 'winston';
 
-const logFile = winston.transports.File;
+// You will get this from your environment variables
+const isProduction = process.env.NODE_ENV === 'production';
+
+const transports = [
+  // Always log to the console (stdout/stderr) in production
+  new winston.transports.Console()
+];
+
+// Add file transports only for development
+if (!isProduction) {
+  transports.push(
+    new winston.transports.File({ 
+      filename: 'logs/error.log', 
+      level: 'error' 
+    }),
+    new winston.transports.File({ 
+      filename: 'logs/info.log', 
+      level: 'info' 
+    })
+  );
+}
 
 const logger = winston.createLogger({
   level: 'info',
@@ -10,22 +28,7 @@ const logger = winston.createLogger({
     winston.format.timestamp(),
     winston.format.json()
   ),
-  transports: [
-    new winston.transports.Console(),
-
-    // Automatically log errors to error.log
-    new logFile({ 
-      filename: 'logs/error.log', 
-      level: 'error' 
-    }),
-
-    // Automatically log all info to info.log
-    // for user report logs
-    new logFile({ 
-      filename: 'logs/info.log', 
-      level: 'info' 
-    })
-  ]
+  transports: transports
 });
 
 export default logger;

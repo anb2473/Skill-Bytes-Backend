@@ -1,0 +1,5 @@
+{"level":"error","timestamp":"2025-08-28T21:54:48.440Z"}
+{"level":"error","timestamp":"2025-09-01T01:48:32.678Z"}
+{"level":"error","timestamp":"2025-09-01T01:54:30.457Z"}
+{"level":"error","timestamp":"2025-09-01T01:54:31.689Z"}
+{"error":{},"level":"error","message":"Error in login emailOrUsername is not defined","name":"ReferenceError","stack":"ReferenceError: emailOrUsername is not defined\n    at file:///app/routes/auth/auth.js:125:31\n    at Layer.handleRequest (/app/node_modules/router/lib/layer.js:152:17)\n    at next (/app/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/app/node_modules/router/lib/route.js:117:3)\n    at handle (/app/node_modules/router/index.js:435:11)\n    at Layer.handleRequest (/app/node_modules/router/lib/layer.js:152:17)\n    at /app/node_modules/router/index.js:295:15\n    at processParams (/app/node_modules/router/index.js:582:12)\n    at next (/app/node_modules/router/index.js:291:5)\n    at Function.handle (/app/node_modules/router/index.js:186:3)","timestamp":"2025-09-01T01:56:15.592Z"}

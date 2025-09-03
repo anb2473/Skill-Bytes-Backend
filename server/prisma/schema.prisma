@@ -9,12 +9,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Message {
+  id          Int @id @default(autoincrement())
+  icon        String  @default("📢")
+  content     String
+  bannerColor String @default("#2821fc")
+  owner       User @relation(fields: [ownerid], references: [id])
+  ownerid     Int
+}
+
 model User {
   id        Int @id @default(autoincrement())
   email     String @unique
   passw     String
-  username  String @unique
+  username  String? @unique
   fname     String?
-  lname     String?
   createdAt DateTime @default(now())
+  inbox     Message[]
 }

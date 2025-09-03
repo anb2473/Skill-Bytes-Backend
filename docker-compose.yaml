@@ -11,7 +11,7 @@ services:
       - ./server:/app
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@skill-bytes-db:5432/skill-bytes?schema=public
-      - NODE_ENV=development
+      - NODE_ENV=production
       - PORT=3000
     env_file:
       - ./server/.env
