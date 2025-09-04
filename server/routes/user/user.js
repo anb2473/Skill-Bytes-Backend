@@ -4,6 +4,22 @@ import logger from '../../logger.js';
 
 const router = express.Router();
 
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
 router.post('/set-name', async (req, res) => {
     const userId = req.userID; // From authMiddleware
     const { name } = req.body;
@@ -112,6 +128,58 @@ router.delete('/msg:msgId', async (req, res) => {
         }
     } catch (err) {
         logger.error('Error in delete message API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+})
+
+router.get('/get-daily-challenge', async (req, res) => {
+    const userId = req.userID;
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    try {
+        const challenges = await prisma.user.findMany({
+            where: {
+                createdAt:{
+                    gte: startOfToday,
+                    lte: endOfToday
+                }
+            }
+        })
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { preferences: true }
+        });
+
+        if (!user) {
+            return res.status(403).json({ err: 'User not found' });
+        }
+
+        const userPreferences = user.preferences || [];
+
+        let preferredChallenge = null;
+        let topScore = -1;
+        for (const challenge of shuffle(challenges)) {
+            const challengeTags = challenge.tags || [];
+            const intersection = challengeTags.filter(tag => userPreferences.includes(tag));
+            const score = intersection.length;
+            if (score > topScore) {
+                topScore = score;
+                topChallenge = { ...challenge, score };
+            }
+        }
+        return res.status(200).json({ challenge: preferredChallenge });
+    } catch (err) {
+        logger.error('Error in get daily challenge API only method', {
             error: err,
             message: err.message,
             stack: err.stack,

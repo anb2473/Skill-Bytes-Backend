@@ -26,4 +26,14 @@ model User {
   fname     String?
   createdAt DateTime @default(now())
   inbox     Message[]
+  preferences String[] @default([])
+}
+
+model Challenge {
+  id          Int @id @default(autoincrement())
+  title       String
+  description String
+  difficulty  String
+  tags        String[]
+  createdAt   DateTime @default(now())
 }
