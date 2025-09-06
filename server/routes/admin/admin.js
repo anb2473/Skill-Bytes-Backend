@@ -40,4 +40,30 @@ router.post('/send-msg', async (req, res) => {
     }
 });
 
+router.post('/send-challenge', async (req, res) => {
+    const { title, description, difficulty, tags } = req.body;
+    if (!title || typeof title !== 'string' || !description || typeof description !== 'string' || !difficulty || typeof difficulty !== 'string' || !tags || !Array.isArray(tags)) {
+        return res.status(400).json({ err: 'Invalid input data' });
+    }
+    try {
+        const challenge = await prisma.challenge.create({
+            data: {
+                title,
+                description,
+                difficulty,
+                tags: { set: tags }
+            }
+        });
+        return res.status(200).json({ msg: 'Challenge created', challenge });
+    } catch (err) {
+        logger.error('Error in send challenge route', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+});
+
 export default router;
