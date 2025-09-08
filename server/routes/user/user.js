@@ -18,6 +18,8 @@ function shuffle(array) {
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
   }
+
+  return array;
 }
 
 router.post('/set-name', async (req, res) => {
@@ -147,7 +149,7 @@ router.get('/get-daily-challenge', async (req, res) => {
     endOfToday.setHours(23, 59, 59, 999);
 
     try {
-        const challenges = await prisma.user.findMany({
+        const challenges = await prisma.challenge.findMany({
             where: {
                 createdAt:{
                     gte: startOfToday,
@@ -174,7 +176,7 @@ router.get('/get-daily-challenge', async (req, res) => {
             const score = intersection.length;
             if (score > topScore) {
                 topScore = score;
-                topChallenge = { ...challenge, score };
+                preferredChallenge = { ...challenge, score };
             }
         }
         return res.status(200).json({ challenge: preferredChallenge });
