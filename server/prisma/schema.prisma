@@ -27,6 +27,7 @@ model User {
   createdAt DateTime @default(now())
   inbox     Message[]
   preferences String[] @default([])
+  languages  String @default("JavaScript")
 }
 
 model Challenge {

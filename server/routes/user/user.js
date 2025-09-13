@@ -88,6 +88,53 @@ router.post('/set-username', async (req, res) => {
     }
 });
 
+router.post('/set-pref', async (req, res) => {
+    const userId = req.userID;
+    const { topics } = req.body;
+    if (!Array.isArray(topics) || !topics.every(tag => typeof tag === 'string')) {
+        return res.status(400).json({ err: 'Topics must be an array of strings' });
+    }
+    try {
+        await prisma.user.update({
+            where: { id: userId },
+            data: { preferences: topics }
+        });
+
+        return res.status(200).json({ msg: 'Preferences updated successfully' });
+    } catch (err) {
+        logger.error('Error in set preferences API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+});
+
+router.post('/set-pref-lang', async (req, res) => {
+    const userId = req.userID;
+    const { language } = req.body;
+
+    try {
+        await prisma.user.update({
+            where: {id: userId},
+            data: { languages: language }
+        });
+        
+        return res.status(200).json({ msg: 'Language preference updated successfully' });
+    } catch (err) {
+        logger.error('Error in set language preference API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+
+        return res.status(500).json({ err: 'Internal serevr error' })
+    }
+});
+
 router.get('/inbox', async (req, res) => {
     const userId = req.userID;
     
