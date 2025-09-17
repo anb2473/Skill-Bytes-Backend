@@ -35,6 +35,7 @@ model Challenge {
   title       String
   description String
   difficulty  String
+  content    String
   tags        String[]
   createdAt   DateTime @default(now())
 }

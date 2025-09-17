@@ -226,6 +226,7 @@ router.get('/get-daily-challenge', async (req, res) => {
                 preferredChallenge = { ...challenge, score };
             }
         }
+        console.log(preferredChallenge);
         return res.status(200).json({ challenge: preferredChallenge });
     } catch (err) {
         logger.error('Error in get daily challenge API only method', {
