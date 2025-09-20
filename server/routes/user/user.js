@@ -192,7 +192,7 @@ router.get('/get-daily-challenge', async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: userId },
-            select: { preferences: true }
+            select: { preferences: true, previouslyCompleted: true, openChallengeId: true, openChallengeUpdatedAt: true }
         });
 
         if (!user) {
@@ -201,14 +201,14 @@ router.get('/get-daily-challenge', async (req, res) => {
 
         // Check if open challenge already exists
         // Check if not 24 hours have passed since last update to openChallengeId and not no date exists, if so then return the existing challenge
-        if (user.openChallengeId || !(new Date() - user.openChallengeUpdatedAt < 24 * 60 * 60 * 1000 && !user.openChallengeUpdatedAt)) {
+        if (user.openChallengeId && !(new Date() - user.openChallengeUpdatedAt < 24 * 60 * 60 * 1000 && !user.openChallengeUpdatedAt)) {
             const preferredChallenge = await prisma.challenge.findUnique({
                 where: { id: user.openChallengeId }
             });
             return res.status(200).json({ challenge: preferredChallenge });
         }
 
-        previouslyCompleted = user.previouslyCompleted || [];
+        const previouslyCompleted = user.previouslyCompleted || [];
 
         const challenges = await prisma.challenge.findMany({
             where: {
