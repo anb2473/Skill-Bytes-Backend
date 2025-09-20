@@ -244,6 +244,55 @@ router.get('/get-daily-challenge', async (req, res) => {
         });
         return res.status(500).json({ err: 'Internal server error' });
     }
-})
+});
+
+router.get('/get-completed', async (req, res) => {
+    const userId = req.userID;
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { previouslyCompleted: true }
+        });
+
+        const previouslyCompleted = user?.previouslyCompleted || [];
+        const challenges = await prisma.challenge.findMany({
+            where: { id: { in: previouslyCompleted } }
+        });
+
+        return res.status(200).json({ challenges });
+    } catch (err) {
+        logger.error('Error in get completed challenges API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+});
+
+// router.get('/get-challenge', async (req, res) => {
+//     const challengeId = parseInt(req.body.challengeId);
+//     if (isNaN(challengeId)) {
+//         return res.status(400).json({ err: 'Invalid challenge ID' });
+//     }
+//     try {
+//         const challenge = await prisma.challenge.findUnique({
+//             where: {id: challengeId}
+//         });
+//         if (!challenge) {
+//             return res.status(404).json({ err: 'Challenge not found' });
+//         }
+//         return res.status(200).json({ challenge })
+//     } catch (err) {
+//         logger.error({
+//             error: err,
+//             message: err.message,
+//             stack: err.stack,
+//             name: err.name
+//         });
+//         return res.status(500).json({ err: 'Internal server error' })
+//     }
+// })
 
 export default router;
