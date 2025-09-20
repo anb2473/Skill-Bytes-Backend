@@ -28,6 +28,10 @@ model User {
   inbox     Message[]
   preferences String[] @default([])
   languages  String @default("JavaScript")
+  previouslyCompleted Int[] @default([])
+  openChallenge  Challenge? 
+  openChallengeId Int? @unique
+  openChallengeUpdatedAt DateTime?
 }
 
 model Challenge {
@@ -38,4 +42,6 @@ model Challenge {
   content    String
   tags        String[]
   createdAt   DateTime @default(now())
+  owner       User? @relation(fields: [ownerid], references: [id])
+  ownerid     Int? @unique
 }

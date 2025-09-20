@@ -189,21 +189,7 @@ router.delete('/msg:msgId', async (req, res) => {
 router.get('/get-daily-challenge', async (req, res) => {
     const userId = req.userID;
 
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
-
     try {
-        const challenges = await prisma.challenge.findMany({
-            where: {
-                createdAt:{
-                    gte: startOfToday,
-                    lte: endOfToday
-                }
-            }
-        })
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: { preferences: true }
@@ -212,6 +198,25 @@ router.get('/get-daily-challenge', async (req, res) => {
         if (!user) {
             return res.status(403).json({ err: 'User not found' });
         }
+
+        // Check if open challenge already exists
+        // Check if not 24 hours have passed since last update to openChallengeId and not no date exists, if so then return the existing challenge
+        if (user.openChallengeId || !(new Date() - user.openChallengeUpdatedAt < 24 * 60 * 60 * 1000 && !user.openChallengeUpdatedAt)) {
+            const preferredChallenge = await prisma.challenge.findUnique({
+                where: { id: user.openChallengeId }
+            });
+            return res.status(200).json({ challenge: preferredChallenge });
+        }
+
+        previouslyCompleted = user.previouslyCompleted || [];
+
+        const challenges = await prisma.challenge.findMany({
+            where: {
+                id: {
+                    notIn: previouslyCompleted
+                }
+            }
+        })
 
         const userPreferences = user.preferences || [];
 
@@ -226,7 +231,9 @@ router.get('/get-daily-challenge', async (req, res) => {
                 preferredChallenge = { ...challenge, score };
             }
         }
-        console.log(preferredChallenge);
+        user.openChallengeId = preferredChallenge.id;
+        user.openChallengeUpdatedAt = new Date();
+        user.previouslyCompleted = [...previouslyCompleted, preferredChallenge.id];
         return res.status(200).json({ challenge: preferredChallenge });
     } catch (err) {
         logger.error('Error in get daily challenge API only method', {
