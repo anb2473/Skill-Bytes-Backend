@@ -43,7 +43,9 @@ Output: "edoc"</pre>
 
     </div>
     `,
+  selectorDescription: 'Write a function that takes a string and returns it reversed',
   difficulty: 'beginner',
+  points: 10,
   content: `
     // reverse_string
     // Input: String (i.e., "hello")

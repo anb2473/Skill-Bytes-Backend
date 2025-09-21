@@ -38,9 +38,11 @@ model Challenge {
   id          Int @id @default(autoincrement())
   title       String
   description String
+  selectorDescription String
   difficulty  String
   content    String
   tags        String[]
+  points      Int @default(0)
   createdAt   DateTime @default(now())
   owner       User? @relation(fields: [ownerid], references: [id])
   ownerid     Int? @unique

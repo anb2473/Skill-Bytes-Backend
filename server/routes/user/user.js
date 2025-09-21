@@ -231,7 +231,10 @@ router.get('/get-daily-challenge', async (req, res) => {
                 preferredChallenge = { ...challenge, score };
             }
         }
-        prisma.user.update({
+        if (preferredChallenge === null ) {
+            return res.status(404).json({ err: 'No challenges available' });
+        }
+        await prisma.user.update({
             where: {id: userId},
             data: {
                 openChallengeId: preferredChallenge.id,
@@ -259,7 +262,7 @@ router.get('/get-completed', async (req, res) => {
             select: { previouslyCompleted: true }
         });
 
-        const previouslyCompleted = user?.previouslyCompleted || [];
+        const previouslyCompleted = user.previouslyCompleted || [];
         const challenges = await prisma.challenge.findMany({
             where: { id: { in: previouslyCompleted } }
         });

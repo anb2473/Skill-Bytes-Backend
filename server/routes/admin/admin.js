@@ -41,8 +41,8 @@ router.post('/send-msg', async (req, res) => {
 });
 
 router.post('/send-challenge', async (req, res) => {
-    const { title, description, difficulty, tags, content } = req.body;
-    if (!title || typeof title !== 'string' || !description || typeof description !== 'string' || !difficulty || typeof difficulty !== 'string' || !tags || !Array.isArray(tags) || typeof content !== 'string') {
+    const { title, description, selectorDescription, difficulty, tags, content } = req.body;
+    if (!title || typeof title !== 'string' || !description || typeof description !== 'string' || !typeof selectorDescription == 'string' || !difficulty || typeof difficulty !== 'string' || !tags || !Array.isArray(tags) || typeof content !== 'string') {
         return res.status(400).json({ err: 'Invalid input data' });
     }
     try {
@@ -50,6 +50,7 @@ router.post('/send-challenge', async (req, res) => {
             data: {
                 title,
                 description,
+                selectorDescription,
                 difficulty,
                 content,
                 tags: { set: tags }
