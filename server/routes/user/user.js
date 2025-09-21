@@ -231,9 +231,14 @@ router.get('/get-daily-challenge', async (req, res) => {
                 preferredChallenge = { ...challenge, score };
             }
         }
-        user.openChallengeId = preferredChallenge.id;
-        user.openChallengeUpdatedAt = new Date();
-        user.previouslyCompleted = [...previouslyCompleted, preferredChallenge.id];
+        prisma.user.update({
+            where: {id: userId},
+            data: {
+                openChallengeId: preferredChallenge.id,
+                openChallengeUpdatedAt: new Date(),
+                previouslyCompleted: [...previouslyCompleted, preferredChallenge.id]
+            }
+        });
         return res.status(200).json({ challenge: preferredChallenge });
     } catch (err) {
         logger.error('Error in get daily challenge API only method', {
