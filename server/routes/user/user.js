@@ -22,6 +22,14 @@ function shuffle(array) {
   return array;
 }
 
+function isSameDay(d1, d2) {
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
+
 router.post('/set-name', async (req, res) => {
     const userId = req.userID; // From authMiddleware
     const { name } = req.body;
@@ -200,8 +208,9 @@ router.get('/get-daily-challenge', async (req, res) => {
         }
 
         // Check if open challenge already exists
-        // Check if not 24 hours have passed since last update to openChallengeId and not no date exists, if so then return the existing challenge
-        if (user.openChallengeId && !(new Date() - user.openChallengeUpdatedAt < 24 * 60 * 60 * 1000 && !user.openChallengeUpdatedAt)) {
+        // Check if still same day since last update to openChallengeId and not no date exists, if so then return the existing challenge
+        console.log(user.openChallengeId);
+        if (user.openChallengeId && user.openChallengeUpdatedAt && isSameDay(new Date(), user.openChallengeUpdatedAt)) {
             const preferredChallenge = await prisma.challenge.findUnique({
                 where: { id: user.openChallengeId }
             });

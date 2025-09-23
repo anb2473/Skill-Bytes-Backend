@@ -46,4 +46,7 @@ model Challenge {
   createdAt   DateTime @default(now())
   owner       User? @relation(fields: [ownerid], references: [id])
   ownerid     Int? @unique
+  testCases   Json? @default("[]")
+  generator   Json? @default("{}")
+  functionName String?
 }

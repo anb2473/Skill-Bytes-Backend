@@ -5,55 +5,84 @@ const url = 'http://localhost:3000/admin/send-challenge';
 const body = {
   title: 'String Reversal',
   description: `
-    <style>
-      pre { background: #1a1a1a; padding: 10px; margin: 5px 0; }
-      .example { margin-bottom: 15px; }
-      .constraints { margin-top: 20px; }
-    </style>
-    
-    Write a function which takes a string and returns all of the characters in that string in reverse order.
+<style>
+  pre { background: #1a1a1a; padding: 10px; margin: 5px 0; }
+  .example { margin-bottom: 15px; }
+  .constraints { margin-top: 20px; }
+</style>
 
-    <div style="align-items: left; text-align: left;">
-    
-    <div class="example" style="margin-top: 15px;">
-    Example 1:
-    <pre>Input: str = "hello"
+Write a function which takes a string and returns all of the characters in that string in reverse order.
+
+<div style="align-items: left; text-align: left;">
+
+<div class="example" style="margin-top: 15px;">
+Example 1:
+<pre>Input: str = "hello"
 Output: "olleh"</pre>
-    </div>
+</div>
 
-    <div class="example">
-    Example 2:
-    <pre>Input: str = "12345"
+<div class="example">
+Example 2:
+<pre>Input: str = "12345"
 Output: "54321"</pre>
-    </div>
+</div>
 
-    <div class="example">
-    Example 3:
-    <pre>Input: str = "code"
+<div class="example">
+Example 3:
+<pre>Input: str = "code"
 Output: "edoc"</pre>
-    </div>
+</div>
 
-    <div class="constraints">
-    Constraints:
-    <ul style="margin-left: 25px;">
-      <li>The input must be a string</li>
-      <li>str.length <= 1000</li>
-    </ul>
-    </div>
+<div class="constraints">
+Constraints:
+<ul style="margin-left: 25px;">
+  <li>The input must be a string</li>
+  <li>str.length <= 1000</li>
+</ul>
+</div>
 
-    </div>
+</div>
     `,
   selectorDescription: 'Write a function that takes a string and returns it reversed',
   difficulty: 'beginner',
   points: 10,
   content: `
-    // reverse_string
-    // Input: String (i.e., "hello")
-    // Output: Reversed String (i.e., "olleh")
+// reverse_string
+// Input: String (i.e., "hello")
+// Output: Reversed String (i.e., "olleh")
 
-    function reverseString(str) {
-    
-    }`,
+function reverseString(str) {
+
+}`,
+  functionName: 'reverseString',
+  testCases: [
+    { input: '"hello"', expectedOutput: '"olleh"' },
+    { input: '"12345"', expectedOutput: '"54321"' },
+    { input: '"code"', expectedOutput: '"edoc"' },
+    { input: "", expectedOutput: "" },
+    { input: ""}
+  ],
+  generator: {
+    inFn: `
+    const randomStr = n => Array.from({length: 1 + Math.floor(Math.random() * n)}, 
+      () => String.fromCharCode(33 + Math.floor(Math.random() * (126 - 33 + 1)))
+    ).join('');
+    const out = randomStr(1000);
+    console.log(out);
+    `,
+    outFn: `
+    const reverseString = s => {
+      const ret = "";
+      for (let i = s.length - 1; i >= 0; i--) {
+        ret += s[i];
+      }  
+      return ret;
+    }
+    const out = reverseString(input) === output;
+    console.log(out);
+    `,
+    cases: 100,
+  },
   tags: ['algorithms', 'data-structures']
 };
 
