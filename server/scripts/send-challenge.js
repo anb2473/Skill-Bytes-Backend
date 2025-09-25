@@ -56,30 +56,35 @@ function reverseString(str) {
 }`,
   functionName: 'reverseString',
   testCases: [
-    { input: '"hello"', expectedOutput: '"olleh"' },
-    { input: '"12345"', expectedOutput: '"54321"' },
-    { input: '"code"', expectedOutput: '"edoc"' },
-    { input: "", expectedOutput: "" },
-    { input: ""}
+    { input: 'hello', expectedOutput: 'olleh' },
+    { input: '12345', expectedOutput: '54321' },
+    { input: 'code', expectedOutput: 'edoc' },
+    { input: '', expectedOutput: '' },
   ],
   generator: {
     inFn: `
-    const randomStr = n => Array.from({length: 1 + Math.floor(Math.random() * n)}, 
-      () => String.fromCharCode(33 + Math.floor(Math.random() * (126 - 33 + 1)))
-    ).join('');
-    const out = randomStr(1000);
-    console.log(out);
+      const randomStr = (n) => {
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const length = 1 + Math.floor(Math.random() * n);
+        return Array.from({ length }, () => 
+          chars[Math.floor(Math.random() * chars.length)]
+        ).join('');
+      };
+
+      const out = randomStr(1000);
+      out;
     `,
     outFn: `
-    const reverseString = s => {
-      const ret = "";
-      for (let i = s.length - 1; i >= 0; i--) {
-        ret += s[i];
-      }  
-      return ret;
-    }
-    const out = reverseString(input) === output;
-    console.log(out);
+      const reverseString = s => {
+        let ret = "";
+        for (let i = s.length - 1; i >= 0; i--) {
+          ret += s[i];
+        }  
+        return ret;
+      };
+
+      const out = reverseString(input) === output;
+      out;
     `,
     cases: 100,
   },
