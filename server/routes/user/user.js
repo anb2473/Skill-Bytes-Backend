@@ -4,6 +4,8 @@ import logger from '../../logger.js';
 
 const router = express.Router();
 
+const LANGUAGES = ['javascript']
+
 function shuffle(array) {
   let currentIndex = array.length;
 
@@ -125,6 +127,9 @@ router.post('/set-pref-lang', async (req, res) => {
     const { language } = req.body;
 
     try {
+        if (typeof language !== 'string' || !LANGUAGES.includes(language)) {
+            return res.status(400).json({ err: 'Invalid language preference' });
+        }
         await prisma.user.update({
             where: {id: userId},
             data: { languages: language }
