@@ -29,6 +29,7 @@ model User {
   preferences String[] @default([])
   languages  String @default("JavaScript")
   previouslyCompleted Int[] @default([])
+  completedChallenges Int[] @default([])
   openChallenge  Challenge? 
   openChallengeId Int? @unique
   openChallengeUpdatedAt DateTime?
