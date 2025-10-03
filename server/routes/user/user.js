@@ -351,4 +351,26 @@ router.post('/complete-challenge', async (req, res) => {
     }
 });
 
+router.get('challenge-completion-status', async (req, res) => {
+    const userId = req.userID;
+    try {
+        const user = await prisma.user.findUnique({
+            where: {id: userId},
+        })
+        if (!user) {
+            return res.status(403).json({ err: 'User not found' });
+        }
+
+        return res.status(200).json({ completedChallenges: user.completedChallenges || [] });
+    } catch (error) {
+        logger.error('Error in challenge completion status API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+})
+
 export default router;
