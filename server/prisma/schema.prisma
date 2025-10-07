@@ -50,4 +50,5 @@ model Challenge {
   testCases   Json? @default("[]")
   generator   Json? @default("{}")
   functionName String?
+  help         String?
 }

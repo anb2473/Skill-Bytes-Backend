@@ -88,7 +88,13 @@ function reverseString(str) {
     `,
     cases: 100,
   },
-  tags: ['algorithms', 'data-structures']
+  tags: ['algorithms', 'data-structures'],
+  help: `
+  In order to solve the problem try breaking down what it is actually asking. For any input, for example
+  "hello", we need to return the reverse, or "olleh". All we are doing when we are reversing the string is
+  creating reading the string from the last character to the first, and adding each character to a new string.
+  As such the problem can be solved with a simple for loop.
+  `
 };
 
 // Encode Basic Auth (username empty, password = change_in_production)
