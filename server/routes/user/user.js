@@ -351,7 +351,7 @@ router.post('/complete-challenge', async (req, res) => {
     }
 });
 
-router.get('challenge-completion-status', async (req, res) => {
+router.get('/challenge-completion-status', async (req, res) => {
     const userId = req.userID;
     try {
         const user = await prisma.user.findUnique({
@@ -371,6 +371,6 @@ router.get('challenge-completion-status', async (req, res) => {
         });
         return res.status(500).json({ err: 'Internal server error' });
     }
-})
+});
 
 export default router;
