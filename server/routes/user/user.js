@@ -318,27 +318,30 @@ router.get('/get-completed', async (req, res) => {
 // })
 
 router.post('/complete-challenge', async (req, res) => {
-    userId = req.userID;
+    const userId = req.userID;
     try {
-        code = req.code;
+        const {code, challengeId} = req.body;
+        console.log(code, challengeId);
         if (typeof code !== 'string' || code.trim().length < 1) {
             return res.status(400).json({ err: 'Code submission cannot be empty' });
         }
 
-        user = await prisma.user.findUnique({
-            where: {id, userId}
+        const user = await prisma.user.findUnique({
+            where: {id: userId}
         })
         if (!user) {
             return res.status(403).json({ err: 'User not found' });
         }
 
-        challengeId = req.challengeId;
-        challenge = prisma.challenge.findUnique({where: {id: challengeId}});
+        const challenge = prisma.challenge.findUnique({where: {id: challengeId}});
         if (!challenge) {
             return res.status(404).json({ err: 'Challenge not found' });
         }
 
-        user.completedChallenges = [...(user.completedChallenges || []), challengeId];
+        await prisma.user.update({
+            where: {id: userId},
+            data: { completedChallenges: [...(user.completedChallenges || []), challengeId] }
+        });
         return res.status(200).json({ msg: 'Challenge marked as completed' });
     } catch (err) {
         logger.error('Error in complete challenge API only method', {
