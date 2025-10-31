@@ -320,10 +320,16 @@ router.get('/get-completed', async (req, res) => {
 router.post('/complete-challenge', async (req, res) => {
     const userId = req.userID;
     try {
-        const {code, challengeId} = req.body;
+        let {code, challengeId} = req.body;
         console.log(code, challengeId);
         if (typeof code !== 'string' || code.trim().length < 1) {
             return res.status(400).json({ err: 'Code submission cannot be empty' });
+        }
+
+        // Validate challengeId
+        challengeId = parseInt(challengeId);
+        if (isNaN(challengeId)) {
+            return res.status(400).json({ err: 'Invalid challenge ID' });
         }
 
         const user = await prisma.user.findUnique({
@@ -333,14 +339,16 @@ router.post('/complete-challenge', async (req, res) => {
             return res.status(403).json({ err: 'User not found' });
         }
 
-        const challenge = prisma.challenge.findUnique({where: {id: challengeId}});
+        const challenge = await prisma.challenge.findUnique({where: {id: challengeId}});
         if (!challenge) {
             return res.status(404).json({ err: 'Challenge not found' });
         }
 
+        const existingCompleted = Array.isArray(user.completedChallenges) ? user.completedChallenges : [];
+
         await prisma.user.update({
             where: {id: userId},
-            data: { completedChallenges: [...(user.completedChallenges || []), challengeId] }
+            data: { completedChallenges: [...existingCompleted, challengeId] }
         });
         return res.status(200).json({ msg: 'Challenge marked as completed' });
     } catch (err) {
