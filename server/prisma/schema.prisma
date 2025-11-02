@@ -33,6 +33,7 @@ model User {
   openChallenge  Challenge? 
   openChallengeId Int? @unique
   openChallengeUpdatedAt DateTime?
+  points Int @default(0)
 }
 
 model Challenge {

@@ -348,7 +348,7 @@ router.post('/complete-challenge', async (req, res) => {
 
         await prisma.user.update({
             where: {id: userId},
-            data: { completedChallenges: [...existingCompleted, challengeId] }
+            data: { completedChallenges: [...existingCompleted, challengeId], points: user.points + challenge.points }
         });
         return res.status(200).json({ msg: 'Challenge marked as completed' });
     } catch (err) {
@@ -383,5 +383,20 @@ router.get('/challenge-completion-status', async (req, res) => {
         return res.status(500).json({ err: 'Internal server error' });
     }
 });
+
+router.get('/leader-board', async (req, res) => {
+    leaderboard = prisma.user.groupBy({
+        by: ['points'],
+        _sum: {
+            points: true, // Example: Sum of 'fieldToSortBy'
+        },
+        orderBy: {
+            _sum: {
+                points: 'desc', // Sort by the sum of 'fieldToSortBy' in descending order
+            },
+        },
+    });
+    return res.status(200).json({ leaderboard: leaderboard });
+})
 
 export default router;
