@@ -280,7 +280,7 @@ router.get('/get-completed', async (req, res) => {
         const challenges = await prisma.challenge.findMany({
             where: { id: { in: previouslyCompleted } }
         });
-
+        
         return res.status(200).json({ challenges });
     } catch (err) {
         logger.error('Error in get completed challenges API only method', {
@@ -346,6 +346,8 @@ router.post('/complete-challenge', async (req, res) => {
 
         const existingCompleted = Array.isArray(user.completedChallenges) ? user.completedChallenges : [];
 
+        console.log( user.points + challenge.points)
+
         await prisma.user.update({
             where: {id: userId},
             data: { completedChallenges: [...existingCompleted, challengeId], points: user.points + challenge.points }
@@ -385,18 +387,20 @@ router.get('/challenge-completion-status', async (req, res) => {
 });
 
 router.get('/leader-board', async (req, res) => {
-    leaderboard = prisma.user.groupBy({
-        by: ['points'],
-        _sum: {
-            points: true, // Example: Sum of 'fieldToSortBy'
+    const userId = req.userID;
+    
+    const leaderboard = await prisma.user.findMany({
+        select: {
+          id: true,
+          username: true,
+          points: true,
         },
         orderBy: {
-            _sum: {
-                points: 'desc', // Sort by the sum of 'fieldToSortBy' in descending order
-            },
+          points: 'desc',
         },
     });
-    return res.status(200).json({ leaderboard: leaderboard });
+  
+    return res.status(200).json({ leaderboard: leaderboard, id: userId });
 })
 
 export default router;
