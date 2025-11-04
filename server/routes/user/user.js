@@ -280,7 +280,7 @@ router.get('/get-completed', async (req, res) => {
         const challenges = await prisma.challenge.findMany({
             where: { id: { in: previouslyCompleted } }
         });
-        
+
         return res.status(200).json({ challenges });
     } catch (err) {
         logger.error('Error in get completed challenges API only method', {
@@ -398,6 +398,10 @@ router.get('/leader-board', async (req, res) => {
         orderBy: {
           points: 'desc',
         },
+    });
+
+    leaderboard.forEach(user => {
+        console.log(user.points);
     });
   
     return res.status(200).json({ leaderboard: leaderboard, id: userId });
