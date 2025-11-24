@@ -32,7 +32,7 @@ app.use('/user', authMiddleware, userRoutes);
 app.use('/admin', adminMiddleware, adminRoutes);
 
 // serve vite frontend
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, './public/dist')));
 
 app.listen(PORT, () => {
     logger.info(`Server local at http://127.0.0.1:${PORT}`);

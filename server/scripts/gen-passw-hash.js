@@ -11,7 +11,7 @@ async function generateHash(password) {
 // Get password from command-line arguments
 const password = process.argv[2];
 if (!password) {
-    console.error('Usage: node hashPassword.js <password>');
+    console.error('No password');
     process.exit(1);
 }
 

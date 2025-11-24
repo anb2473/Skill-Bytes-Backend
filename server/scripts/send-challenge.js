@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'; // or global fetch in Node 18+
+import fetch from 'node-fetch';
 
 const url = 'http://localhost:3000/admin/send-challenge';
 
