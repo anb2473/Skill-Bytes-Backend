@@ -22,6 +22,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+	origin: 'https://skill-bytes.netlify.app'
+}));
 
 app.get('/ping', (req, res) => {
     return res.status(200).json({ msg: 'pong' });
