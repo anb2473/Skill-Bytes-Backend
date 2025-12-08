@@ -9,4 +9,4 @@ tmux send-keys -t $SESSION:0.0 "cd ~/Skill-Bytes-Backend" C-m
 tmux send-keys -t $SESSION:0.0 "docker compose up" C-m
 
 # run tmole in pane 1
-tmux send-keys -t $SESSION:0.1 "tmole 3000" C-m
+tmux send-keys -t $SESSION:0.1 "./~/Skill-Bytes-Backend/tmole_watcher.sh" C-m
