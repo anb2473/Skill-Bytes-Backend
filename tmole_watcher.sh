@@ -32,15 +32,18 @@ while true; do
 		# Check specifically if tmole is running as a descendant of this pane's shell
 		TMOLE_RUNNING=0
 		TMOLE_PIDS=$(pgrep -f "tmole 3000" 2>/dev/null)
-
-		if [ -n "$TMOLE_PIDS" ]; then
-				for tmole_pid in $TMOLE_PIDS; do
-						if is_descendant $tmole_pid $PANE_PID; then
-								TMOLE_RUNNING=1
-								break
-						fi
-				done
+		if [[ -n "$TMOLE_PIDS" ]]; then
+			TMOLE_RUNNING=1
 		fi
+
+		# if [ -n "$TMOLE_PIDS" ]; then
+		# 		for tmole_pid in $TMOLE_PIDS; do
+		# 				if is_descendant $tmole_pid $PANE_PID; then
+		# 						TMOLE_RUNNING=1
+		# 						break
+		# 				fi
+		# 		done
+		# fi
 
 		if [ $TMOLE_RUNNING -eq 0 ]; then
 				echo "No tmole process detected in pane $PANE (PID: $PANE_PID), restarting tmole..."
