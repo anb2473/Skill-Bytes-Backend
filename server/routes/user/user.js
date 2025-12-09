@@ -399,10 +399,6 @@ router.get('/leader-board', async (req, res) => {
           points: 'desc',
         },
     });
-
-    leaderboard.forEach(user => {
-        console.log(user.points);
-    });
   
     return res.status(200).json({ leaderboard: leaderboard, id: userId });
 })
