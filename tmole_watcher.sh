@@ -20,6 +20,8 @@ while true; do
 
 				pkill -f "tmole 3000"
 				
+				rm "/tmp/tmole_output.txt"
+
 				tmux send-keys -t "$SESSION:0.$PANE" "tmole 3000 > /tmp/tmole_output.txt 2>&1" C-m
 
 				sleep 10
