@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const url = 'http://localhost:3000/admin/send-challenge';
+const url = 'https://ylep0b-ip-96-241-22-239.tunnelmole.net/admin/send-challenge';
 
 const body = {
   title: 'String Reversal',
