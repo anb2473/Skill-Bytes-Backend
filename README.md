@@ -4,6 +4,8 @@ The Skill Bytes Backend service is the core server framework for the Skill Bytes
 
 **Live Application:** [skill-bytes.netlify.app](https://skill-bytes.netlify.app)
 
+**We Are Also Looking For Contributors!** If you want to join the Skill Bytes project read the [Contributing](#contributing) section.
+
 ---
 
 ## Table of Contents
