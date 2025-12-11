@@ -386,24 +386,68 @@ router.get('/leader-board', async (req, res) => {
 router.delete('/delete-account', async (req, res) => {
     const userId = req.userID;
     try {
-        const user = await prisma.user.findUnique({
-            where: {
-                id: userId
-            }
-        });
-
-        if (!user) {
-            return res.status(403).json({ err: "User not found" })
-        }
-        
         await prisma.user.update({
             where: { id: userId },
             data: {deleted: true}
         })
 
         return res.status(200).json({msg: "Account deleted successfully"})
-    } catch {
+    } catch (error) {
+        logger.error('Error in challenge completion status API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+})
 
+router.post('/update-user', async (req, res) => {
+    const userId = req.userID;
+    let username = req.query.username
+    let email = req.query.email
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ err: 'User not found' });
+        }
+
+        // Validate email
+        if (validator.isEmail(email)) {
+            // Check domain
+            const allowedDomains = ['gmail.com', 'yahoo.com', 'proton.me'];
+            const domain = email.split('@')[1];
+            if (!allowedDomains.includes(domain)) {
+                return res.status(400).json({ err: 'Email domain not allowed' });
+            }
+        } else {
+            return res.status(400).json({ err: 'Invalid email' })
+        }
+
+        // Validate username
+        if (username.trim() === '') {
+              return res.status(400).json({ err: 'Username cannot be empty' });
+        }
+
+        await prisma.user.update({
+            where: {id: userId},
+            data: {username: username, email: email}
+        });
+
+        return res.status(200).json({msg: "Successfully updated username"})
+    } catch (error) {
+        logger.error('Error in challenge completion status API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
     }
 })
 
