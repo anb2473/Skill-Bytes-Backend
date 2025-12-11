@@ -34,6 +34,7 @@ model User {
   openChallengeId Int? @unique
   openChallengeUpdatedAt DateTime?
   points Int @default(0)
+  deleted Boolean @default(false)
 }
 
 model Challenge {

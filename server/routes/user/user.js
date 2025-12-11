@@ -293,30 +293,6 @@ router.get('/get-completed', async (req, res) => {
     }
 });
 
-// router.get('/get-challenge', async (req, res) => {
-//     const challengeId = parseInt(req.body.challengeId);
-//     if (isNaN(challengeId)) {
-//         return res.status(400).json({ err: 'Invalid challenge ID' });
-//     }
-//     try {
-//         const challenge = await prisma.challenge.findUnique({
-//             where: {id: challengeId}
-//         });
-//         if (!challenge) {
-//             return res.status(404).json({ err: 'Challenge not found' });
-//         }
-//         return res.status(200).json({ challenge })
-//     } catch (err) {
-//         logger.error({
-//             error: err,
-//             message: err.message,
-//             stack: err.stack,
-//             name: err.name
-//         });
-//         return res.status(500).json({ err: 'Internal server error' })
-//     }
-// })
-
 router.post('/complete-challenge', async (req, res) => {
     const userId = req.userID;
     try {
@@ -405,6 +381,30 @@ router.get('/leader-board', async (req, res) => {
     });
   
     return res.status(200).json({ leaderboard: leaderboard, id: userId });
+})
+
+router.delete('/delete-account', async (req, res) => {
+    const userId = req.userID;
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        });
+
+        if (!user) {
+            return res.status(403).json({ err: "User not found" })
+        }
+        
+        await prisma.user.update({
+            where: { id: userId },
+            data: {deleted: true}
+        })
+
+        return res.status(200).json({msg: "Account deleted successfully"})
+    } catch {
+
+    }
 })
 
 export default router;

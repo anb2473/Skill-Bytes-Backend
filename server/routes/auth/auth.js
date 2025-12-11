@@ -136,6 +136,14 @@ router.post('/login', async (req, res) => {
             return res.status(404).json({ err: 'Incorrect password or email' });
         }
 
+        // Cancel soft deletion
+        if (existing.deleted) {
+            await prisma.user.update({
+                where: {id: user.id},
+                data: {deleted: false}
+            })
+        }
+
         // Check for valid password
         const passwCorrect = await bcrypt.compare(passw, user.passw);
         if (passwCorrect) {
