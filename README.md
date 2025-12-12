@@ -609,7 +609,7 @@ node server/scripts/gen-passw-hash.js your-admin-password
 - **Node.js 22+** (for local development, optional)
 - **Git**
 
-### Step-by-Step Setup
+### Quick Start
 
 1. **Clone the Repository**
    ```bash
@@ -625,28 +625,41 @@ node server/scripts/gen-passw-hash.js your-admin-password
    cd ..
    ```
 
-3. **Build Docker Images**
+3. **Run the Boot Script**
+   ```bash
+   chmod +x boot.sh
+   ./boot.sh
+   ```
+
+   The `boot.sh` script will:
+   - Build Docker images
+   - Initialize the database schema
+   - Start all services
+   - Make the server available at `http://localhost:3000`
+
+4. **Verify Setup**
+   ```bash
+   curl http://localhost:3000/ping
+   # Should return: {"msg":"pong"}
+   ```
+
+### Manual Setup (Alternative)
+
+If you prefer to run commands manually:
+
+1. **Build Docker Images**
    ```bash
    docker compose build
    ```
 
-4. **Initialize Database**
+2. **Initialize Database**
    ```bash
    docker compose run server npx prisma migrate dev --name init
    ```
-   This creates the database schema and runs all migrations.
 
-5. **Start Services**
+3. **Start Services**
    ```bash
    docker compose up
-   ```
-
-   The server will be available at `http://localhost:3000`
-
-6. **Verify Setup**
-   ```bash
-   curl http://localhost:3000/ping
-   # Should return: {"msg":"pong"}
    ```
 
 ### Development Workflow
@@ -677,16 +690,17 @@ docker compose down -v
 
 ## Production Deployment
 
-The production deployment uses a self-hosting solution with Docker, tmux, and tmole (tunneling service).
+The production deployment uses tmux and tmole for tunneling.
 
 ### Prerequisites
 
 - **Linux server** with Docker installed
-- **tmux** installed
-- **tmole** installed
+- **tmux** installed (`apt install tmux` or `yum install tmux`)
+- **tmole** installed (tunnel service)
+- **Git** configured with push access
 - Clones of `skill-bytes-redirect` and `skill-bytes-frontend` repositories at `~/Skill-Bytes-Redirect` and `~/Skill-Bytes-Frontend`
 
-### Production Setup
+### Quick Start
 
 1. **Clone and Configure**
    ```bash
@@ -695,54 +709,124 @@ The production deployment uses a self-hosting solution with Docker, tmux, and tm
    # Create .env with production values
    ```
 
-2. **Build and Start**
+2. **Run Production Script**
    ```bash
    cd ~/Skill-Bytes-Backend
-   docker compose build
-   docker compose run server npx prisma migrate deploy
-   ```
-
-3. **Run Init Script**
-   ```bash
    chmod +x tmux_init.sh
    ./tmux_init.sh
    ```
 
-### Production Scripts
+   The `tmux_init.sh` script will:
+   - Create a tmux session named "skill-bytes"
+   - Start Docker Compose services
+   - Initialize and monitor tmole tunnel
+   - Automatically update redirect and frontend configurations
 
-#### `tmux_init.sh`
+### What Happens During Production Start
 
-Creates a tmux session with three panes:
-- **Pane 0**: Docker Compose services
-- **Pane 1**: Reserved for tmole watcher
-- **Pane 2**: tmole watcher script
+The `tmux_init.sh` script creates a tmux session with three panes:
 
-#### `tmole_watcher.sh`
+- **Pane 0**: Runs Docker Compose services (database and API server)
+- **Pane 1**: Reserved for the tmole tunnel process
+- **Pane 2**: Runs `tmole_watcher.sh` which:
+  - Monitors pane 1 for tmole process
+  - Starts tmole if not running
+  - Extracts the tunnel URL from tmole output
+  - Updates `skill-bytes-redirect/redirect.json` with the new tunnel URL
+  - Updates `skill-bytes-frontend/src/pages/config.jsx` with the new tunnel URL
+  - Commits and pushes changes to respective repositories
 
-Monitors pane 1 for tmole process:
-- If tmole is not running, starts it
-- Extracts the tunnel URL from tmole output
-- Updates `skill-bytes-redirect/redirect.json` with new URL
-- Updates `skill-bytes-frontend/src/pages/config.jsx` with new URL
-- Commits and pushes changes to respective repositories
+### Accessing the Production Session
 
-**Note**: This script requires:
-- Git repositories configured with push access
-- Proper file permissions
-- Network access to GitHub/GitLab
+To attach to the tmux session:
+```bash
+tmux attach -t skill-bytes
+```
+
+To detach from tmux (services keep running):
+```
+Ctrl+B, then D
+```
+
+To navigate between panes:
+```
+Ctrl+B, then arrow keys
+```
+
+### Stopping Production Services
+
+```bash
+# Attach to the tmux session
+tmux attach -t skill-bytes
+
+# Stop services in pane 0
+# Press Ctrl+C in the Docker Compose pane
+
+# Kill the entire tmux session
+tmux kill-session -t skill-bytes
+```
 
 ### Production Considerations
 
 - **Security**: Ensure `JWT_SECRET` and `ADMIN_PASSW_HASH` are strong and kept secret
 - **Database Backups**: Implement regular PostgreSQL backups
 - **Logging**: In production, logs go to console (stdout/stderr) for container log aggregation
-- **SSL/TLS**: Use a reverse proxy (nginx, Caddy) for HTTPS termination
-- **Monitoring**: Set up monitoring and alerting for the Docker containers
-- **Updates**: Use `docker compose pull` and `docker compose up -d` for updates
+- **Monitoring**: Monitor the tmux session and Docker containers regularly
+- **Updates**: Pull latest changes and restart the tmux session for updates
+- **tmole Stability**: The watcher script automatically restarts tmole if it crashes
+
+### Production Directory Structure
+
+```
+~/
+├── Skill-Bytes-Backend/     # This repository
+├── Skill-Bytes-Redirect/    # Redirect service (auto-updated)
+└── Skill-Bytes-Frontend/    # Frontend repo (auto-updated)
+```
 
 ---
 
 ## Scripts & Utilities
+
+### Boot Script
+
+**Location**: `boot.sh`
+
+Automated development setup script.
+
+**Usage:**
+```bash
+chmod +x boot.sh
+./boot.sh
+```
+
+**What it does:**
+- Builds Docker images
+- Runs database migrations
+- Starts all services
+
+### Production Init Script
+
+**Location**: `tmux_init.sh`
+
+Creates production tmux session with Docker services and tmole tunnel.
+
+**Usage:**
+```bash
+chmod +x tmux_init.sh
+./tmux_init.sh
+```
+
+### tmole Watcher Script
+
+**Location**: `tmole_watcher.sh`
+
+Monitors and manages tmole tunnel, updating related repositories.
+
+**Requirements:**
+- Git repositories configured with push access
+- Proper file permissions
+- Network access to GitHub/GitLab
 
 ### Password Hash Generator
 
@@ -756,18 +840,6 @@ node server/scripts/gen-passw-hash.js <password>
 ```
 
 **Output**: Base64-encoded hash (set as `ADMIN_PASSW_HASH`)
-
-### Send Challenge Script
-
-**Location**: `server/scripts/send-challenge.js`
-
-Utility script for creating challenges (if implemented).
-
-### Send Message Script
-
-**Location**: `server/scripts/send-msg.js`
-
-Utility script for sending messages (if implemented).
 
 ### Clear Logs Script
 
@@ -858,7 +930,7 @@ Please refer to the following documentation files:
 1. Read `CONTRIBUTING.md`
 2. Create a feature branch
 3. Make your changes
-4. Test locally with Docker
+4. Test locally with `./boot.sh`
 5. Update documentation if needed
 6. Submit a pull request
 
@@ -891,6 +963,11 @@ Please refer to the following documentation files:
 **Port Already in Use**
 - Change `PORT` in `.env` or `docker-compose.yaml`
 - Or stop the process using port 3000
+
+**tmole Not Working in Production**
+- Verify tmole is installed: `which tmole`
+- Check tmux pane 1 for error messages
+- Restart the tmux session
 
 ---
 

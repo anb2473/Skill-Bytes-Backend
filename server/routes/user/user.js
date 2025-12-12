@@ -407,6 +407,10 @@ router.post('/update-user', async (req, res) => {
     const userId = req.userID;
     let username = req.query.username
     let email = req.query.email
+    let preferences = req.query.preferences
+    let languages = req.query.languages
+    let fname = req.query.fname
+
     try {
         const user = await prisma.user.findUnique({
             where: {
@@ -418,25 +422,40 @@ router.post('/update-user', async (req, res) => {
         }
 
         // Validate email
-        if (validator.isEmail(email)) {
-            // Check domain
-            const allowedDomains = ['gmail.com', 'yahoo.com', 'proton.me'];
-            const domain = email.split('@')[1];
-            if (!allowedDomains.includes(domain)) {
-                return res.status(400).json({ err: 'Email domain not allowed' });
+        if (email !== undefined) {
+            if (validator.isEmail(email)) {
+                // Check domain
+                const allowedDomains = ['gmail.com', 'yahoo.com', 'proton.me'];
+                const domain = email.split('@')[1];
+                if (!allowedDomains.includes(domain)) {
+                    return res.status(400).json({ err: 'Email domain not allowed' });
+                }
+            } else {
+                return res.status(400).json({ err: 'Invalid email' })
             }
         } else {
-            return res.status(400).json({ err: 'Invalid email' })
+            email = user.email
         }
 
-        // Validate username
-        if (username.trim() === '') {
+        if (username !== undefined) {
+            if (username.trim() === '') {
               return res.status(400).json({ err: 'Username cannot be empty' });
+            }
+        } else {
+            username = user.username
+        }
+
+        if (fname !== undefined) {
+            if (fname.trim() === '') {
+              return res.status(400).json({ err: 'First name cannot be empty' });
+            }
+        } else {
+            fname = user.fname
         }
 
         await prisma.user.update({
             where: {id: userId},
-            data: {username: username, email: email}
+            data: {username: username, email: email, fname: fname}
         });
 
         return res.status(200).json({msg: "Successfully updated username"})
