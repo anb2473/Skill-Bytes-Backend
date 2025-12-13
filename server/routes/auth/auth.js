@@ -137,7 +137,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Cancel soft deletion
-        if (existing.deleted) {
+        if (user.deleted) {
             await prisma.user.update({
                 where: {id: user.id},
                 data: {deleted: false}

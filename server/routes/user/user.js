@@ -297,7 +297,6 @@ router.post('/complete-challenge', async (req, res) => {
     const userId = req.userID;
     try {
         let {code, challengeId} = req.body;
-        console.log(code, challengeId);
         if (typeof code !== 'string' || code.trim().length < 1) {
             return res.status(400).json({ err: 'Code submission cannot be empty' });
         }
@@ -315,7 +314,9 @@ router.post('/complete-challenge', async (req, res) => {
             return res.status(403).json({ err: 'User not found' });
         }
 
-        if (challengeId in (user.completedChallenges || [])) {
+        const existingCompleted = Array.isArray(user.completedChallenges) ? user.completedChallenges : [];
+
+        if (existingCompleted.includes(challengeId)) {
             return res.status(200).json({ msg: 'Challenge already completed' });
         }
 
@@ -323,10 +324,6 @@ router.post('/complete-challenge', async (req, res) => {
         if (!challenge) {
             return res.status(404).json({ err: 'Challenge not found' });
         }
-
-        const existingCompleted = Array.isArray(user.completedChallenges) ? user.completedChallenges : [];
-
-        console.log( user.points + challenge.points)
 
         await prisma.user.update({
             where: {id: userId},
