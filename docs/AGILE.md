@@ -29,7 +29,7 @@ Hello, and thank you for contributing to the Skill Bytes project! We are current
 | Code Cleanup – User Routes             | Audit and refine all user-related routes to maintain code quality, consistency, and security compliance.                                                                                            | ❌     |
 | Code Cleanup – Admin Routes            | Review and polish administrative routes to uphold coding standards and strengthen application security.                                                                                             | ❌     |
 | Code Cleanup – Root Routes             | Clean and standardize root-level routing logic to improve maintainability and overall application structure.                                                                                        | ❌     |
-| Code Cleanup – Internal Tooling        | Evaluate and refine internal tooling code to ensure it meets project conventions and security expectations.                                                                                         | ❌     |
+| UI Patch For Navbar        | Reduce the thickness of the minor Navbar link after effects.                                                                                         | ✅     |
 
 ## Project Direction
 The following is an outline for the long term goals of the project.
