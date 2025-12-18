@@ -177,4 +177,18 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.delete('/logout', async (req, res) => {
+    try {
+        return res.clearCookie('jwt').status(200);
+    } catch (err) {
+        logger.error('Error in login', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        });
+        return res.status(500).json({ err: 'Internal server error' });
+    }
+})
+
 export default router;
