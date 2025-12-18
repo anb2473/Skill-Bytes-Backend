@@ -179,7 +179,7 @@ router.post('/login', async (req, res) => {
 
 router.delete('/logout', async (req, res) => {
     try {
-        return res.clearCookie('jwt').status(200);
+        return res.clearCookie('jwt').status(200).json({ msg: 'Succesfully deleted cookies' });
     } catch (err) {
         logger.error('Error in login', {
             error: err,

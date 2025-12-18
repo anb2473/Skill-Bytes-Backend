@@ -23,7 +23,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-	origin: 'https://skill-bytes.netlify.app'
+	// origin: process.env.CORS_ORIGINS || false
+    origin: true,        // 👈 reflect request origin
+    credentials: true,   // 👈 allow cookies
 }));
 
 app.get('/ping', (req, res) => {
