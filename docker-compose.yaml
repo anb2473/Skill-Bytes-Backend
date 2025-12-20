@@ -1,22 +1,12 @@
 version: '3'
 services:
-#  tunnelmole-server:
-#    image: tunnelmole/server:latest
-#    container_name: tunnelmole_server
-#    restart: unless-stopped
-#    ports:
-#      - "80:80"
-#      - "443:443"
-
-#  tunnelmole-client:
-#    image: tunnelmole/tunnelmole:latest
-#    container_name: tunnelmole_client
-#    depends_on:
-#      - server
-#    environment:
-#      - TM_SERVER_URL=https://ur-domain.com
-#    command: http server:3000
-#    restart: unless-stopped
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --no-autoupdate --url http://skill-bytes-server:3000
+    depends_on:
+      - server
+    restart: unless-stopped
 
   server:
     build: ./server
