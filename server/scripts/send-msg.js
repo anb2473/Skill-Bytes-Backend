@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'; // or global fetch in Node 18+
 
-const url = 'https://walt-explicitly-stadium-hiring.trycloudflare.com/api/admin/send-msg';
+const url = 'https://participating-fees-august-garcia.trycloudflare.com/api/admin/send-msg';
 
 const body = {
   icon: '📢',

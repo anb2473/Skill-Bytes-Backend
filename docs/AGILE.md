@@ -18,7 +18,9 @@ Hello, and thank you for contributing to the Skill Bytes project! We are current
 | Update Compose                 | Use Cloudflare tunnel to remove the need for timeout watcher scripts.                       | ✅     |
 | Loading Animations                 | Add loading animations for contact page image, and dashboard image.                       | ✅     |
 | Patch Reload                 | Patch page reloading leading to cannot GET errors on Cloudflare production frontend.                       | ✅     |
+| Patch Message Deletion                 | Patch message deletion failing, 404 error on api request.                       | ✅     |
 | Patch Challenge                 | Patch challenge endpoint leading to cannot GET errors on Cloudflare production frontend.                       | ❌     |
+| Patch Error Message In Login                 | Patch error page in login to use the error from the JSON response in an incorrect password or email case.                       | ❌     |
 | Patch Mobile Full Screen                 | Patch mobile to automatically use full screen. (primary on /user pages)                       | ✅     |
 
 ## Sprint 0 (12/14/2025 - 12/21/2025) Patch Daily Challenge Implementation

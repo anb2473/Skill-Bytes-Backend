@@ -171,17 +171,18 @@ router.get('/inbox', async (req, res) => {
     }
 })
 
-router.delete('/msg:msgId', async (req, res) => {
+router.delete('/msg/:msgId', async (req, res) => {
     const userId = req.userID;
+    console.log(req.params.msgId)
     const msgId = parseInt(req.params.msgId);
     if (isNaN(msgId)) {
         return res.status(400).json({ err: 'Invalid message ID' });
     }
     try {
-        deleted = await prisma.message.delete({
+        const deleted = await prisma.message.delete({
             where: {
                 id: msgId,
-                userId: userId
+                ownerid: userId
             }
         });
 
