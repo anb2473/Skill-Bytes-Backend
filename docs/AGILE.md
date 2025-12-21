@@ -17,7 +17,7 @@ Hello, and thank you for contributing to the Skill Bytes project! We are current
 | Write Internal Tooling                 | Develop internal tooling—using the Ink framework—to streamline challenge publishing and provide automated warnings to ensure the challenge pool remains sufficiently populated.                       | ⌛     |
 | Update Compose                 | Use Cloudflare tunnel to remove the need for timeout watcher scripts.                       | ✅     |
 | Loading Animations                 | Add loading animations for contact page image, and dashboard image.                       | ✅     |
-| Patch Reload                 | Patch page reloading leading to cannot GET errors on Cloudflare production frontend.                       | ❌     |
+| Patch Reload                 | Patch page reloading leading to cannot GET errors on Cloudflare production frontend.                       | ✅     |
 | Patch Challenge                 | Patch challenge endpoint leading to cannot GET errors on Cloudflare production frontend.                       | ❌     |
 | Patch Mobile Full Screen                 | Patch mobile to automatically use full screen. (primary on /user pages)                       | ✅     |
 

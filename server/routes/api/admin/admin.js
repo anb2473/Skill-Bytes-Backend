@@ -58,7 +58,7 @@ router.post('/send-challenge', async (req, res) => {
                 points: parseInt(points)
             }
         });
-        return res.status(200).json({ msg: 'Challenge created', challenge });
+        return res.status(200).json({ msg: 'Challenge created' });
     } catch (err) {
         logger.error('Error in send challenge route', {
             error: err,

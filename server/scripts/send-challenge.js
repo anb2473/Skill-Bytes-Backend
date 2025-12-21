@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 
-// const url = 'https://ylep0b-ip-96-241-22-239.tunnelmole.net/admin/send-challenge';
-const url = 'http://127.0.0.1:3000/admin/send-challenge'
+const url = 'https://omissions-within-ones-turning.trycloudflare.com/api/admin/send-challenge';
 const body = {
   title: 'String Reversal',
   description: `
