@@ -1,10 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import authRoutes from './routes/auth/auth.js';
-import userRoutes from './routes/user/user.js';
-import adminRoutes from './routes/admin/admin.js';
-import authMiddleware from './middleware/authMiddleware.js';
-import adminMiddleware from './middleware/adminMiddleware.js';
+import apiRoutes from './routes/api/api.js';
 import logger from './logger.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -28,12 +24,15 @@ app.get('/ping', (req, res) => {
     return res.status(200).json({ msg: 'pong' });
 });
 
-app.use('/auth', authRoutes);
-app.use('/user', authMiddleware, userRoutes);
-app.use('/admin', adminMiddleware, adminRoutes);
+app.use('/api', apiRoutes);
 
-// serve vite frontend
+// serve vite frontend assets
 app.use(express.static(path.join(__dirname, './public/dist')));
+
+// Ensure all frontend endpointed requests are routed to index
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/dist", "index.html"))
+})
 
 app.listen(PORT, () => {
     logger.info(`Server local at http://127.0.0.1:${PORT}`);

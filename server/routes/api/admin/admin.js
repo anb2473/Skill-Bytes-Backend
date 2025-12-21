@@ -1,9 +1,6 @@
 import express from 'express';
-import { prisma } from '../../prismaClient.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import validator from 'validator';
-import logger from '../../logger.js';
+import { prisma } from '../../../prismaClient.js';
+import logger from '../../../logger.js';
 
 const router = express.Router();
 

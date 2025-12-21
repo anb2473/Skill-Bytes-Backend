@@ -1,9 +1,9 @@
 import express from 'express';
-import { prisma } from '../../prismaClient.js';
+import { prisma } from '../../../prismaClient.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
-import logger from '../../logger.js';
+import logger from '../../../logger.js';
 
 const SALT_ROUNDS = 10;
 const maxJWTAge = 24 * 60 * 60 * 1000; // 24 hrs in ms
