@@ -1,5 +1,13 @@
 version: '3'
 services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --no-autoupdate --url http://skill-bytes-server:3000
+    depends_on:
+      - server
+    restart: unless-stopped
+
   server:
     build: ./server
     container_name: skill-bytes-server

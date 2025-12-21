@@ -69,13 +69,6 @@ while true; do
 						git add .
 						git commit -m "Update redirect url"
 						git push origin main
-
-						echo "export const BACKEND_URL = \"$URL\";" > ~/Skill-Bytes-Frontend/src/pages/config.jsx
-
-						cd ~/Skill-Bytes-Frontend
-						git add .
-						git commit -m "Update redirect url"
-						git push origin main
 				else
 						echo "Warning: Could not extract tmole URL from output"
 				fi
