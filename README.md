@@ -920,10 +920,10 @@ Redirect service that provides the current backend URL to the frontend. Updated 
 
 Please refer to the following documentation files:
 
-- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)**: Contribution guidelines
-- **[CLA.md](docs/CLA.md)**: Contributor License Agreement
-- **[AGILE.md](docs/AGILE.md)**: Agile development practices
-- **[LICENSE.md](docs/LICENSE.md)**: License information
+- **[CONTRIBUTING.md](docs/contributing/CONTRIBUTING.md)**: Contribution guidelines
+- **[CLA.md](docs/licensing/CLA.md)**: Contributor License Agreement
+- **[AGILE.md](docs/contributing/AGILE.md)**: Agile development practices
+- **[LICENSE.md](docs/licensing/LICENSE.md)**: License information
 
 ### Quick Contribution Checklist
 
@@ -973,13 +973,13 @@ Please refer to the following documentation files:
 
 ## License
 
-See [LICENSE.md](docs/LICENSE.md) for license information.
+See [LICENSE.md](docs/licensing/LICENSE.md) for license information.
 
 ---
 
 ## Support
 
-For issues, questions, or contributions, please refer to the [Contributing Guidelines](docs/CONTRIBUTING.md) or open an issue in the repository.
+For issues, questions, or contributions, please refer to the [Contributing Guidelines](docs/contributing/CONTRIBUTING.md) or open an issue in the repository.
 
 ---
 

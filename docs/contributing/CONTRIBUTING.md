@@ -9,7 +9,7 @@ To keep the project legally clear and ensure smooth collaboration, all contribut
 ## Contributor License Agreement (CLA)
 
 Before submitting any code — including pull requests, direct commits, forks, or patches — you must agree to the CLA.  
-The full CLA can be found here: [docs/CLA.md](CLA.md)
+The full CLA can be found in the [CLA.md](CLA.md)
 
 By contributing, you are acknowledging that:  
 - Your contributions are assigned to the project maintainer, Austin Blass.  
