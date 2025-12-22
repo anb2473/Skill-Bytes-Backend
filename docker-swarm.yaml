@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --url http://server:3000
+    networks:
+      - skillbytes-net
+    deploy:
+      restart_policy:
+        condition: any
+
+  server:
+    image: your-dockerhub/skillbytes-server:latest
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: host
+    configs:
+      - source: skillbytes_env
+        target: /app/.env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    networks:
+      - skillbytes-net
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+  skill-bytes-db:
+    image: postgres:13-alpine
+    volumes:
+      - skill-bytes-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=skill-bytes
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
+        mode: host
+    networks:
+      - skillbytes-net
+    deploy:
+      restart_policy:
+        condition: any
+
+networks:
+  skillbytes-net:
+    driver: overlay
+
+volumes:
+  skill-bytes-db-data:
+    driver: local
+
+configs:
+  skillbytes_env:
+    external: true
