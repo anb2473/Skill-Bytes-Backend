@@ -9,7 +9,7 @@ Hello, and thank you for contributing to the Skill Bytes project! We are current
 
 | Item                     | Description                                                                          | Status |
 |--------------------------|--------------------------------------------------------------------------------------|--------|
-|Implement Soft Account Deletion and Management|Implement a frontend to allow users to easily manage their account data, such as email and username, and implement soft account deletion On deletion a flag should be set in the database marking the account for deletion, and an email should be sent to the user informing them that their account will be deleted unless they log into their account|❌|
+| Implement Soft Account Deletion and Management | Implement a frontend to allow users to easily manage their account data, such as email and username, and implement soft account deletion On deletion a flag should be set in the database marking the account for deletion, and an email should be sent to the user informing them that their account will be deleted unless they log into their account | ❌ |
 
 ## Sprint 1 (12/21/2025 - 12/28/2025) Full Patch (Internal Tooling Postponed)
 
@@ -25,6 +25,7 @@ Hello, and thank you for contributing to the Skill Bytes project! We are current
 | Patch Error Message In Login | Patch error page in login to use the error from the JSON response in an incorrect password or email case | ✅ |
 | Patch Mobile Full Screen | Patch mobile to automatically use full screen (primary on /user pages) | ✅ |
 | Create docker-swarm.yml | Migrate docker-compose.yml to a docker swarm compatible state | ✅ |
+| Update Documentation | Add `COMPOSE.md` and `SWARM.md` for instructions for developement deployement, and update the `README.md` with correct deployement instructions | ❌ |
 
 ## Sprint 0 (12/14/2025 - 12/21/2025) Patch Daily Challenge Implementation
 

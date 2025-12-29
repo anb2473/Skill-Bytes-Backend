@@ -3,14 +3,14 @@ version: "3.8"
 services:
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate --url http://server:3000
+    command: tunnel --no-autoupdate --url http://skill-bytes-server:3000
     networks:
       - skillbytes-net
     deploy:
       restart_policy:
         condition: any
 
-  server:
+  skill-bytes-server:
     image: your-dockerhub/skillbytes-server:latest
     ports:
       - target: 3000

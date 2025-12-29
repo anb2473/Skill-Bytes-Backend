@@ -1,6 +1,6 @@
 # Docker Swarm Deployment Guide
 
-This document provides instructions for deploying this application on a Linux server cluster using Docker Swarm. This guide is intended for production deployment only. Please refer to [COMPOSE.md](./COMPOSE.md) for development deployment information.
+This document provides instructions for deploying this application on a Linux server cluster using Docker Swarm. This guide is intended for production deployment only. Please refer to [COMPOSE.md](COMPOSE.md) for development deployment information.
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ The following prerequisites must be satisfied before proceeding with the deploym
 
 1. One Linux computer must be designated as the cluster's manager node
 2. At least one additional Linux computer must be available to serve as a worker node
-3. All devices must be connected to the same private network
+3. All devices must be connected to the same private network, and must have Docker installed
 4. This repository must be cloned onto the manager node
 
 ## Setup Guide
