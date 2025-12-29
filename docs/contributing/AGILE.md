@@ -2,7 +2,7 @@
 
 Hello, and thank you for contributing to the Skill Bytes project! We are currently using a modified AGILE framework to manage work Below is a list of planned features, if you finish any feature please check it off on the list The way our AGILE system works is every week we begin a new sprint, named with the start and end dates - and goal - where we layout goals for the week Every goal that is finished will be marked completed, and the ones that remain incomplete by the end of the week will be pushed into the next week
 
-**ACTIVE SPRINT:** [Sprint 1 (12/21/2025 - 12/28/2025) Full Patch (Internal Tooling Postponed)](#sprint-1-12212025---12282025-full-patch-internal-tooling-postponed)
+**ACTIVE SPRINT:** [Sprint 2 (12/28/2025 - 1/5/2026) Account Management](#sprint-1-12212025---12282025-full-patch-internal-tooling-postponed)
 
 ## Sprint 2 (12/28/2025 - 1/5/2026) Account Management
 
