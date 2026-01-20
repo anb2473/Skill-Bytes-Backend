@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const url = 'https://omissions-within-ones-turning.trycloudflare.com/api/admin/send-challenge';
+const url = 'https://villages-walnut-competitors-designing.trycloudflare.com/api/admin/send-challenge';
 const body = {
   title: 'String Reversal',
   description: `
