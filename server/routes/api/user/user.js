@@ -148,6 +148,132 @@ router.post('/set-pref-lang', async (req, res) => {
     }
 });
 
+router.get('/fname', async (req, res) => {
+    const userId = req.userID;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            }
+        })
+
+        if (!user) {
+            return res.status(403).json({ err: "User not found" });
+        }
+
+        return res.status(200).json({ name: user.fname })
+    } catch (e) {
+        logger.error('Error in fname API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
+router.get('/username', async (req, res) => {
+    const userId = req.userID;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            }
+        })
+
+        if (!user) {
+            return res.status(403).json({ err: "User not found" });
+        }
+
+        return res.status(200).json({ username: user.username })
+    } catch (e) {
+        logger.error('Error in fname API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
+router.get('/preferences', async (req, res) => {
+    const userId = req.userID;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            }
+        })
+
+        if (!user) {
+            return res.status(403).json({ err: "User not found" });
+        }
+
+        return res.status(200).json({ preferences: user.preferences })
+    } catch (e) {
+        logger.error('Error in fname API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
+router.get('/language', async (req, res) => {
+    const userId = req.userID;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            }
+        })
+
+        if (!user) {
+            return res.status(403).json({ err: "User not found" });
+        }
+        console.log(user)
+
+        return res.status(200).json({ language: user.language })
+    } catch (e) {
+        logger.error('Error in fname API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
+router.get('/email', async (req, res) => {
+    const userId = req.userID;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            }
+        })
+
+        if (!user) {
+            return res.status(403).json({ err: "User not found" });
+        }
+
+        return res.status(200).json({ email: user.email })
+    } catch (e) {
+        logger.error('Error in fname API only method', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
 router.get('/inbox', async (req, res) => {
     const userId = req.userID;
     
@@ -390,73 +516,6 @@ router.delete('/delete-account', async (req, res) => {
         })
 
         return res.status(200).json({msg: "Account deleted successfully"})
-    } catch (error) {
-        logger.error('Error in challenge completion status API only method', {
-            error: err,
-            message: err.message,
-            stack: err.stack,
-            name: err.name
-        });
-        return res.status(500).json({ err: 'Internal server error' });
-    }
-})
-
-router.post('/update-user', async (req, res) => {
-    const userId = req.userID;
-    let username = req.query.username
-    let email = req.query.email
-    let preferences = req.query.preferences
-    let languages = req.query.languages
-    let fname = req.query.fname
-
-    try {
-        const user = await prisma.user.findUnique({
-            where: {
-                id: userId
-            }
-        })
-        if (!user) {
-            return res.status(403).json({ err: 'User not found' });
-        }
-
-        // Validate email
-        if (email !== undefined) {
-            if (validator.isEmail(email)) {
-                // Check domain
-                const allowedDomains = ['gmail.com', 'yahoo.com', 'proton.me'];
-                const domain = email.split('@')[1];
-                if (!allowedDomains.includes(domain)) {
-                    return res.status(400).json({ err: 'Email domain not allowed' });
-                }
-            } else {
-                return res.status(400).json({ err: 'Invalid email' })
-            }
-        } else {
-            email = user.email
-        }
-
-        if (username !== undefined) {
-            if (username.trim() === '') {
-              return res.status(400).json({ err: 'Username cannot be empty' });
-            }
-        } else {
-            username = user.username
-        }
-
-        if (fname !== undefined) {
-            if (fname.trim() === '') {
-              return res.status(400).json({ err: 'First name cannot be empty' });
-            }
-        } else {
-            fname = user.fname
-        }
-
-        await prisma.user.update({
-            where: {id: userId},
-            data: {username: username, email: email, fname: fname}
-        });
-
-        return res.status(200).json({msg: "Successfully updated username"})
     } catch (error) {
         logger.error('Error in challenge completion status API only method', {
             error: err,
