@@ -11,7 +11,7 @@ services:
         condition: any
 
   skill-bytes-server:
-    image: your-dockerhub/skillbytes-server:latest
+    image: 192.168.19.125:5000/skillbytes-server:2
     ports:
       - target: 3000
         published: 3000
