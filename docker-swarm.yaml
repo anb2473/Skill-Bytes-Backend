@@ -11,7 +11,7 @@ services:
         condition: any
 
   skill-bytes-server:
-    image: 192.168.19.125:5000/skillbytes-server:2
+    image: 192.168.19.125:5000/skillbytes-server:7
     ports:
       - target: 3000
         published: 3000
@@ -23,6 +23,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@skillbytes_skill-bytes-db:5432/skill-bytes?schema=public
     networks:
       - skillbytes-net
     deploy:
