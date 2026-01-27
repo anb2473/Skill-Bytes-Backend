@@ -1,4 +1,7 @@
 import express from 'express';
+import validator from 'validator';
+import { randomBytes, createHash, timingSafeEqual } from 'node:crypto';
+import sendEmail from '../../../mailer.js'
 import { prisma } from '../../../prismaClient.js';
 import logger from '../../../logger.js';
 
@@ -31,6 +34,10 @@ function isSameDay(d1, d2) {
     d1.getDate() === d2.getDate()
   );
 }
+
+router.get('/ping', async (req, res) => {
+    return res.status(200).json({ msg: "pong" })
+})
 
 router.post('/set-name', async (req, res) => {
     const userId = req.userID; // From authMiddleware
@@ -132,7 +139,7 @@ router.post('/set-pref-lang', async (req, res) => {
         }
         await prisma.user.update({
             where: {id: userId},
-            data: { languages: language }
+            data: { language: language }
         });
         
         return res.status(200).json({ msg: 'Language preference updated successfully' });
@@ -144,9 +151,134 @@ router.post('/set-pref-lang', async (req, res) => {
             name: err.name
         });
 
-        return res.status(500).json({ err: 'Internal serevr error' })
+        return res.status(500).json({ err: 'Internal server error' })
     }
 });
+
+router.post('/req-set-email', async (req, res) => {
+    const userId = req.userID;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+
+        const randomToken = randomBytes(32).toString("hex");
+
+        const user_email = user.email
+
+        sendEmail([user_email], "Change Your Email", `
+             <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #000000; padding: 40px; text-align: center;">
+                <div style="max-width: 500px; margin: 0 auto; background-color: #000000; padding: 30px; border-radius: 8px; border: 1px solid #ffff; box-shadow: 0 2px 4px #ffff;">
+                    
+                    <div style="font-size: 40px; margin-bottom: 20px;">📧</div>
+                    
+                    <h2 style="color: #f2f2f2; margin-top: 0;">Change Your Email</h2>
+                    
+                    <p style="color: #999999; font-size: 16px; line-height: 1.5; margin-bottom: 30px;">
+                    We noticed a request to change your email address associated with your account.
+                    </p>
+                    
+                    <a href="https://skill-bytes.netlify.app/change-email?token=${randomToken}" 
+                    style="display: inline-block; background-color: #f2f2f2; color: #000; padding: 14px 28px; font-weight: bold; text-decoration: none; border-radius: 5px; font-size: 16px;">
+                    Change Email
+                    </a>
+                    
+                    <p style="color: #888888; font-size: 14px; margin-top: 30px;">
+                    If you didn't request this, you can safely ignore this email.
+                    </p>
+                </div>
+            </div>
+            `) 
+
+        const hashedToken = createHash("sha256").update(randomToken).digest("hex");
+
+        await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                temporaryToken: hashedToken,
+                tokenUpdated: new Date()
+            }
+        })
+
+        return res.status(200).json({ "msg": "Successfully requested email change" })
+    } catch (err) {
+        logger.error('Error in API only method req-set-email', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
+
+router.post('/change-email', async (req, res) => {
+    const body = req.body;
+    const email = body.email;
+    const token = body.token;
+
+    try {
+        if (!token) {
+            return res.status(403).json({ "msg": "Missing token" })
+        }
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ err: 'Invalid email format' });
+        }
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: req.userID,
+            }
+        })
+
+        if (Date.now() - user.tokenUpdated > 900000) { // 15 minutes in ms
+            return res.status(403).json({ "err": "Token expired" })
+        }
+        const hashedToken = createHash("sha256").update(token).digest("hex")
+
+        const incommingTokenBuffer = Buffer.from(hashedToken, "hex")
+        const storedTokenBuffer = Buffer.from(user.temporaryToken, "hex")
+
+        // if two tokens dont match 
+        if (incommingTokenBuffer.length !== storedTokenBuffer.length || !timingSafeEqual(incommingTokenBuffer, storedTokenBuffer)) {
+            console.log(user.temporaryToken)
+            return res.status(403).json({ "err": "Invalid token" })
+        }
+
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                email: email
+            }
+        })
+
+        if (existingUser) {
+            return res.status(409).json({ err: "Email already in use" })
+        }
+        
+        await prisma.user.update({
+            where: {
+                id: req.userID
+            },
+            data: {
+                email: email,
+                temporaryToken: null
+            }
+        })
+
+        return res.status(200).json({ "msg": "Successfully updated email" })
+    } catch (err) {
+        logger.error('Error in API only method change-email', {
+            error: err,
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        })
+    }
+})
 
 router.get('/fname', async (req, res) => {
     const userId = req.userID;
@@ -236,7 +368,6 @@ router.get('/language', async (req, res) => {
         if (!user) {
             return res.status(403).json({ err: "User not found" });
         }
-        console.log(user)
 
         return res.status(200).json({ language: user.language })
     } catch (e) {

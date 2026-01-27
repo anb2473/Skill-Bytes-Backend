@@ -19,7 +19,7 @@ The following prerequisites must be satisfied before proceeding with the deploym
 
 On the manager node, execute the following command to retrieve the private IP address:
 ```bash
-hostname -i
+hostname -I
 ```
 This command will output the private IP address of the manager node. Using that IP address, initialize Docker Swarm as follows:
 ```bash

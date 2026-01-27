@@ -35,6 +35,8 @@ model User {
   openChallengeUpdatedAt DateTime?
   points Int @default(0)
   deleted Boolean @default(false)
+  temporaryToken String?
+  tokenUpdated DateTime?
 }
 
 model Challenge {
