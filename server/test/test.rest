@@ -1,0 +1,6 @@
+### login
+POST http://127.0.0.1:3000/api/auth/login
+Authorization: Basic dGVzdEBnbWFpbC5jb206dGVzdDEyMzQ1Njc4
+
+### req-set-email
+# POST 
